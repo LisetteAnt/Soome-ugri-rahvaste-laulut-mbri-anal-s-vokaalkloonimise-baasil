@@ -26,7 +26,7 @@ def remove_silence(audio, sr, silence_threshold = SILENCE_THRESHOLD, frame_ms=30
 
     Argumendid:
         audio (np.ndarray):       sisendaudio float32 massiivina
-        sr (int):                 diskreetimissagedus Hz-des (nt 16000)
+        sr (int):                 diskreetimissagedus Hz-des
         silence_threshold (float): amplituudi lävi; frame, mille max amplituud on alla selle, loetakse vaikuseks
         frame_ms (int):           ühe frame'i pikkus millisekundites
 
