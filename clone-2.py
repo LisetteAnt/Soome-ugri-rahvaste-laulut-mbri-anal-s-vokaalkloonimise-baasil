@@ -19,16 +19,16 @@ format = (".wav", ".mp3")
 files = [f for f in os.listdir(REFERENCE_FOLDER) if f.lower().endswith(format)] # loetleb kõik toetatud helifailid kataloogis
 print(f"Leitud {len(files)} faili.")
 
-for idx, faili_nimi in enumerate(failid, 1):
+for idx, file in enumerate(files, 1):
     reference  = REFERENCE_FOLDER / faili_nimi
-    valjund_tee = OUTPUT_FOLDER / f"cloned_{Path(faili_nimi).stem}.wav"
+    output_path = OUTPUT_FOLDER / f"cloned_{Path(file).stem}.wav"
 
-    print(f"\n[{idx}/{len(failid)}] Kloonin: {faili_nimi}")
+    print(f"\n[{idx}/{len(files)}] Kloonin: {file}")
     result = subprocess.run([
         "python", str(SEED_VC_INFERENCE),
         "--source", str(INPUT), # sisendsignaal, mille sisu tahame kloonida sihtsignaali tämbriga
         "--target", str(reference), # sihtsignaal, mille tämbri tahame kloonida sisendsignaali sisu peale
-        "--output", str(valjund_tee),
+        "--output", str(output_path),
         "--diffusion-steps", "100", # vaikeväärtusest kõrgem
         "--length-adjust", "1.0",
         "--inference-cfg-rate", "0.9", # vaikeväärtusest kõrgem
