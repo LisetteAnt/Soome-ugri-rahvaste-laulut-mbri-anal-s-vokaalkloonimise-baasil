@@ -122,17 +122,6 @@ tämber_tunnused <- features %>%
 
 cat("\nTunnuste arv:", length(tämber_tunnused), "\n")
 
-# Sanity check: kas mõni esitaja kuulub mitmesse rahvusesse?
-# (See poleks loogiline - sama inimene ei saa olla mitme rahvuse esindaja.
-# Kui see siiski juhtub, on tegu sama nimega erinevate inimestega ja
-# peame tegema nime unikaalseks, lisades rahvuse sufiksiks.)
-kontroll <- features %>%
-  group_by(esitaja) %>%
-  summarise(n_rahvaid = n_distinct(rahvas)) %>%
-  filter(n_rahvaid > 1)
-if (nrow(kontroll) > 0) {
-  warning("Mõni esitaja esineb mitmes rahvuses! Teeme nimed unikaalseks.")
-  features$esitaja <- paste(features$esitaja, features$rahvas, sep = "__")
 }
 
 # =============================================================================
@@ -190,32 +179,6 @@ tee_klassifikatsioon <- function(andmed, silt) {
   print(cm$table)
   cat("\nKlassipõhine täpsus:\n")
   print(round(cm$byClass[, c("Sensitivity", "Specificity", "Precision")], 3))
-  
-  # Tunnuste olulisus: multi-class puhul on importance veerg iga klassi kohta,
-  # võtame keskmise üle kõigi klasside ühtseks olulisuse skooriks.
-  imp_df <- varImp(mudel)$importance %>%
-    rownames_to_column("tunnus")
-  
-
-  # Overall errori vältimiseks.
-  if ("Overall" %in% colnames(imp_df)) {
-    # Binaarne klassifikatsioon
-    tähtsus <- imp_df %>%
-      arrange(desc(Overall)) %>%
-      head(10)
-  } else {
-    # Mitme klassiga: keskmine üle kõigi klasside veergude
-    imp_df$Overall <- rowMeans(imp_df %>% select(-tunnus))
-    tähtsus <- imp_df %>%
-      select(tunnus, Overall, everything()) %>%
-      arrange(desc(Overall)) %>%
-      head(10)
-  }
-  
-  cat("\nTop 10 olulisemat tunnust:\n")
-  print(tähtsus)
-  
-  list(mudel = mudel, segadus = cm, tähtsus = tähtsus)
 }
 
 # =============================================================================
@@ -227,21 +190,4 @@ kloon <- features %>% filter(kloonitud)
 
 klf_toor  <- tee_klassifikatsioon(toor,  "Toormaterjal")
 klf_kloon <- tee_klassifikatsioon(kloon, "Kloonitud materjal")
-
-# =============================================================================
-# 8. SAMM: Võrdle tunnuste olulisuse muutust toor vs kloon
-# =============================================================================
-cat("\n========================================\n")
-cat("=== Tunnuste olulisuse võrdlus\n")
-cat("========================================\n")
-
-vordlus <- klf_toor$tähtsus %>%
-  select(tunnus, toor_olulisus = Overall) %>%
-  full_join(
-    klf_kloon$tähtsus %>% select(tunnus, kloon_olulisus = Overall),
-    by = "tunnus"
-  ) %>%
-  arrange(desc(coalesce(toor_olulisus, 0) + coalesce(kloon_olulisus, 0)))
-
-print(vordlus)
 
