@@ -6,6 +6,9 @@ library(factoextra)
 library(ggpubr)      
 library(knitr)      
 library(dplyr)
+library(patchwork)
+library(Rtsne)
+
 
 # loen andmestiku sisse
 koik <- read.csv("features.csv")
@@ -23,9 +26,6 @@ kloon <- koik %>% filter(tyyp == "kloon")
 # ============================================================
 # KIRJELDAV ANALÜÜS 
 # ============================================================
-
-library(tidyverse)
-library(knitr)
 
 # ============================================================
 # TUNNUSTE GRUPID
@@ -119,24 +119,11 @@ write_csv(tabel4, "tabel4_formandid_kloon.csv")
 write_csv(tabel5, "tabel5_haalekvaliteet_toor.csv")
 write_csv(tabel6, "tabel6_haalekvaliteet_kloon.csv")
 
-# tabelid Google Sheets'i, et saaksin dokumenti lisada
-library(googlesheets4)
-gs4_auth()
-
-# Loo uus Sheet või kirjuta olemasolevasse
-ss <- gs4_create("bakatöö_tabelid", sheets = list(
-  tabel1 = tabel1,
-  tabel2 = tabel2
-))
-gs4_browse(ss)
 
 # ============================================================
 #  BOXPLOTID 
 # ============================================================
 
-library(tidyverse)
-install.packages("patchwork")
-library(patchwork)
 
 # ==========================
 # SPEKTRAALSED TUNNUSED
@@ -199,9 +186,6 @@ ggplot(df_long, aes(x = rahvas, y = väärtus, fill = tyyp)) +
 # =================================================
 # SPECTRAL CONTRAST JOONIS
 # =================================================
-
-library(tidyverse)
-library(patchwork)
 
 # =======================
 # ANDMETE ETTEVALMISTUS
@@ -281,15 +265,12 @@ joonis_kontrast <- (p_toor | p_kloon) +
   ) &
   theme(legend.position = "bottom")
 
-# Kuva
 print(joonis_kontrast)
 
 # ===================================
 # MFCC -  t-SNE
 # ===================================
-install.packages("Rtsne")
-library(Rtsne)
-library(ggplot2)
+
 
 # Vali MFCC tunnused
 mfcc_tunnused <- paste0("mfcc_", 1:13, "_mean")
