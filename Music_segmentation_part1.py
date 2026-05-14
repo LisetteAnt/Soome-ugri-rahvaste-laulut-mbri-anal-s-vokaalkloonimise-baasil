@@ -12,7 +12,7 @@ NO_CLIPS_FOLDER = "" # kaust, kuhu kopeerida failid millelt klippe ei leitud
 os.makedirs(NO_CLIPS_FOLDER, exist_ok=True)
 INPUT_FOLDER = "" # kaust, kust lugeda kõik mp3 failid
 OUTPUT_FOLDER = "" # kaust, kuhu salvestada 10-sekundilised klipid
-CSV_FILE = "" # CSV fail, mis sisaldab veerge: filename, start, end (aeg sekundites) -> saadakse MusicAndSpeeckDetection.py skriptiga
+CSV_FILE = "" # CSV fail, mis sisaldab veerge: filename, start, end (aeg sekundites) -> saadakse MusicAndSpeechDetection.py skriptiga
 CLIP_LENGTH = 10 
 SR = 44100
 SILENCE_THRESHOLD = 0.01  # alla selle = vaikus, (0.0 - 1.0, muuda kuulamise järgi), mida madalam, seda rangemalt vaikus tuvastatakse
