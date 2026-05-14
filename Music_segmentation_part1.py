@@ -22,8 +22,6 @@ os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 # --- ABIFUNKTSIOONID ---
 
-# Kood on loodud tehisaru selgitava ja parandava abiga. (Claude.ai, Opus 4.7)
-
 def parse_time(time_str):
     """CSV failist aja formaadi 'M:SS' või 'H:MM:SS' teisendamine sekunditeks
     
@@ -100,21 +98,21 @@ for filename, segs in by_file.items():
     clip_samples = CLIP_LENGTH * SR
     clip_idx = 0
     # tühi buffer, kuhu kogume mitu järjestikust CSV-segmenti, et neist saaks
-    # moodustada täis 10-sekundilisi klippe (üks segment võib olla lühem kui 10 s)
+    # moodustadab täis 10-sekundilisi klippe (üks segment võib olla lühem kui 10 s)
     buffer = np.array([], dtype=np.float32) 
 
     for seg_start_sec, seg_end_sec in segs:
         seg_start_sample = int(seg_start_sec * SR)
         seg_end_sample = int(seg_end_sec * SR)
 
-        # Lõika segment ja eemalda vaikus
+        # Lõikab segment ja eemaldab vaikuse
         segment_audio = audio[seg_start_sample:seg_end_sample]
         cleaned = remove_silence(segment_audio, SR, silence_threshold=SILENCE_THRESHOLD)
 
-        # Lisa bufferisse
+        # Lisab bufferisse
         buffer = np.concatenate([buffer, cleaned])
 
-        # Lõika 10-sekundilised klipid
+        # Lõikab 10-sekundilised klipid
         while len(buffer) >= clip_samples:
             clip = buffer[:clip_samples]
             buffer = buffer[clip_samples:]
