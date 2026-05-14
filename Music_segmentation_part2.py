@@ -15,8 +15,6 @@ os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 # --- ABIFUNKTSIOONID ---
 
-# Kood on loodud tehisaru selgitava ja parandava abiga. (Claude.ai, Opus 4.7)
-
 def remove_silence(audio, sr, silence_threshold = SILENCE_THRESHOLD, frame_ms=30):
     """
     Eemaldab helifailist vaikuse amplituudi põhjal.
