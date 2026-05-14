@@ -6,7 +6,7 @@ from pathlib import Path
 # Skripti enda asukoht — kõik teed lähtuvad sellest
 BASE_DIR = Path(__file__).resolve().parent
 
-sisend           = BASE_DIR / "reference" / "aaaaa.wav" # sisendsignaal, mille sisu tahame kloonida sihtsignaali tämbriga
+INPUT          = BASE_DIR / "reference" / "aaaaa.wav" # sisendsignaal, mille sisu tahame kloonida sihtsignaali tämbriga
 REFERENCE_FOLDER     = BASE_DIR / "input" / "saamid" # kataloog, kust lugeda kloonitavaid helifaile 
 OUTPUT_FOLDER    = BASE_DIR / "cloned_files" # kataloog, kuhu salvestada kloonitud helid.
 SEED_VC_DIR      = BASE_DIR / "seed-vc"
@@ -15,9 +15,9 @@ CONFIG_FILE      = SEED_VC_DIR / "config_dit_mel_seed_uvit_whisper_base_f0_44k.y
 
 OUTPUT_FOLDER.mkdir(parents=True, exist_ok=True)
 
-toetatud = (".wav", ".mp3")
-failid = [f for f in os.listdir(REFERENCE_FOLDER) if f.lower().endswith(toetatud)] # loetleb kõik toetatud helifailid kataloogis
-print(f"Leitud {len(failid)} faili.")
+format = (".wav", ".mp3")
+files = [f for f in os.listdir(REFERENCE_FOLDER) if f.lower().endswith(format)] # loetleb kõik toetatud helifailid kataloogis
+print(f"Leitud {len(files)} faili.")
 
 for idx, faili_nimi in enumerate(failid, 1):
     reference  = REFERENCE_FOLDER / faili_nimi
@@ -26,7 +26,7 @@ for idx, faili_nimi in enumerate(failid, 1):
     print(f"\n[{idx}/{len(failid)}] Kloonin: {faili_nimi}")
     result = subprocess.run([
         "python", str(SEED_VC_INFERENCE),
-        "--source", str(sisend), # sisendsignaal, mille sisu tahame kloonida sihtsignaali tämbriga
+        "--source", str(INPUT), # sisendsignaal, mille sisu tahame kloonida sihtsignaali tämbriga
         "--target", str(reference), # sihtsignaal, mille tämbri tahame kloonida sisendsignaali sisu peale
         "--output", str(valjund_tee),
         "--diffusion-steps", "100", # vaikeväärtusest kõrgem
