@@ -153,7 +153,7 @@ tee_klassifikatsioon <- function(andmed, silt) {
   cat("Voldide arv (k):", n_folds,
       "  [vähim esitajaid klassis:", min_esitajaid_klassis, "]\n\n")
   
-  voldid <- groupKFold(grupid, k = n_folds) # jagab grupid 5 voldi vahel
+  voldid <- groupKFold(grupid, k = n_folds) # jagab grupid 5 ploki vahel
   
   kontroll <- trainControl(
     method = "cv",
