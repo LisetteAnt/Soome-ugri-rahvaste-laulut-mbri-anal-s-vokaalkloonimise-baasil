@@ -15,15 +15,15 @@ CONFIG_FILE      = SEED_VC_DIR / "config_dit_mel_seed_uvit_whisper_base_f0_44k.y
 
 OUTPUT_FOLDER.mkdir(parents=True, exist_ok=True)
 
-format = (".wav", ".mp3")
-files = [f for f in os.listdir(REFERENCE_FOLDER) if f.lower().endswith(format)] # loetleb kõik toetatud helifailid kataloogis
+extensions = (".wav", ".mp3")
+files = [f for f in os.listdir(REFERENCE_FOLDER) if f.lower().endswith(extensions)] # loetleb kõik toetatud helifailid kataloogis
 print(f"Leitud {len(files)} faili.")
 
-for idx, file in enumerate(files, 1):
-    reference  = REFERENCE_FOLDER / faili_nimi
-    output_path = OUTPUT_FOLDER / f"cloned_{Path(file).stem}.wav"
+for idx, filename in enumerate(files, 1):
+    reference  = REFERENCE_FOLDER / filename
+    output_path = OUTPUT_FOLDER / f"cloned_{Path(filename).stem}.wav"
 
-    print(f"\n[{idx}/{len(files)}] Kloonin: {file}")
+    print(f"\n[{idx}/{len(files)}] Kloonin: {filename}")
     result = subprocess.run([
         "python", str(SEED_VC_INFERENCE),
         "--source", str(INPUT), # sisendsignaal, mille sisu tahame kloonida sihtsignaali tämbriga
