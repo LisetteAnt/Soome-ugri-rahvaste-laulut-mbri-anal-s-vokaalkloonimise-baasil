@@ -305,6 +305,9 @@ ggplot(df_tsne, aes(x = X, y = Y, color = rahvas)) +
   theme_minimal()
 
 
+
+
+# Selleks on vaja RandomForest.R tulemust!
 # =============================================================================
 # KLASSIFITSEERIMISE TABEL 1: Kogutäpsus ja meta-info
 # =============================================================================
